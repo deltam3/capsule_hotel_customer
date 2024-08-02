@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getCapsule, getCapsules } from "@/app/_lib/data-service";
 import { HiEye, HiMap, HiOutlineUsers } from "react-icons/hi";
+import TextExpander from "@/app/_components/TextExpander";
 
 interface PageParamsProps {
   params: {
@@ -45,9 +46,20 @@ export default async function Page({ params }: PageParamsProps) {
           </h3>
 
           <p className="text-lg text-primary-300 mb-10">
-            A modern and innovative space designed for ultimate comfort and
-            efficiency. Here, each capsule offers a private, serene retreat,
-            perfect for both relaxation and productivity
+            <TextExpander>
+              Welcome to a contemporary and cutting-edge environment
+              meticulously crafted to provide the highest level of comfort and
+              operational efficiency. Within this thoughtfully designed space,
+              each individual capsule is a sanctuary of privacy and tranquility.
+              These capsules are not only designed to offer a peaceful and
+              serene escape from the hustle and bustle of daily life but are
+              also optimized for enhancing productivity. Whether you seek a
+              quiet refuge for relaxation or a focused area for getting work
+              done, each capsule serves as the ideal setting to meet your needs.
+              This innovative space seamlessly blends modern aesthetics with
+              functional design, ensuring that every moment spent here is both
+              enjoyable and productive.
+            </TextExpander>
           </p>
 
           <ul className="flex flex-col gap-4 mb-7">

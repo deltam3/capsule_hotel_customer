@@ -34,3 +34,15 @@ export async function getCapsule(id: GetCapSuleType) {
 
   return data;
 }
+
+export async function getCountries() {
+  try {
+    const res = await fetch(
+      "https://restcountries.com/v2/all?fields=name,flag"
+    );
+    const countries = await res.json();
+    return countries;
+  } catch {
+    throw new Error("나라들을 가져오지 못했습니다.");
+  }
+}

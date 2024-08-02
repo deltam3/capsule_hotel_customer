@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import CapsuleList from "../_components/CapsuleList";
 import Spinner from "../_components/Spinner";
+import Filter from "../_components/Filter";
 
 export const revalidate = 3600;
 
@@ -8,7 +9,15 @@ export const metadata = {
   title: "Capsule",
 };
 
-export default async function Page() {
+interface PageProps {
+  searchParams?: {
+    capacity?: string;
+  };
+}
+
+export default function Page({ searchParams }: PageProps) {
+  const filter = searchParams?.capacity ?? "all";
+
   return (
     <div>
       <h1 className="text-4xl mb-5 text-accent-400 font-medium">
@@ -27,8 +36,12 @@ export default async function Page() {
         exceptionally convenient.
       </p>
 
-      <Suspense fallback={<Spinner />}>
-        <CapsuleList />
+      <div className="flex justify-end mb-8">
+        <Filter />
+      </div>
+
+      <Suspense fallback={<Spinner />} key={filter}>
+        <CapsuleList filter={filter} />
       </Suspense>
     </div>
   );
