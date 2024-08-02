@@ -1,5 +1,6 @@
 import { Database } from "@/database.types";
 import { supabase } from "./supabase";
+import { notFound } from "next/navigation";
 
 type CapsuleType = Database["public"]["Tables"]["capsules"]["Row"];
 
@@ -15,4 +16,19 @@ export async function getCapsules(): Promise<CapsuleType[]> {
   }
 
   return data as CapsuleType[];
+}
+
+export async function getCapsule(id) {
+  const { data, error } = await supabase
+    .from("capsules")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    notFound();
+  }
+
+  return data;
 }
