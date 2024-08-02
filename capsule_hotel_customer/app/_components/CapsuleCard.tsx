@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { HiOutlineUser } from "react-icons/hi";
 import { Database } from "@/database.types";
+import Link from "next/link";
 type CapsuleType = Database["public"]["Tables"]["capsules"]["Row"];
 
 interface CapsuleCardProps {
@@ -12,12 +13,14 @@ const CapsuleCard: React.FC<CapsuleCardProps> = ({ capsule }) => {
 
   return (
     <div className="flex border-primary-800 border">
-      <Image
-        src={image}
-        alt={`Capsule ${name}`}
-        className="flex-1 border-r border-primary-800"
-      />
-
+      <div className="flex-1 relative">
+        <Image
+          src={image}
+          fill
+          alt={`Capsule ${name}`}
+          className="object-cover border-r border-primary-800"
+        />
+      </div>
       <div className="flex-grow">
         <div className="pt-5 pb-4 px-7 bg-primary-950">
           <h3 className="text-accent-500 font-semibold text-2xl mb-3">
@@ -50,12 +53,12 @@ const CapsuleCard: React.FC<CapsuleCardProps> = ({ capsule }) => {
         </div>
 
         <div className="bg-primary-950 border-t border-t-primary-800 text-right">
-          <a
+          <Link
             href={`/capsules/${id}`}
             className="border-l border-primary-800 py-4 px-6 inline-block hover:bg-accent-600 transition-all hover:text-primary-900"
           >
             Details & reservation &rarr;
-          </a>
+          </Link>
         </div>
       </div>
     </div>

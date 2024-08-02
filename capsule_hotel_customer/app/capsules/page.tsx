@@ -1,12 +1,12 @@
-import CapsuleCard from "@/app/_components/CapsuleCard";
+import { Suspense } from "react";
+import CapsuleList from "../_components/CapsuleList";
+import Spinner from "../_components/Spinner";
 
 export const metadata = {
   title: "Capsule",
 };
 
-export default function Page() {
-  const capsules = [];
-
+export default async function Page() {
   return (
     <div>
       <h1 className="text-4xl mb-5 text-accent-400 font-medium">
@@ -25,13 +25,9 @@ export default function Page() {
         exceptionally convenient.
       </p>
 
-      {capsules.length > 0 && (
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-14">
-          {capsules.map((capsule) => (
-            <CapsuleCard capsule={capsule} key={capsule.id} />
-          ))}
-        </div>
-      )}
+      <Suspense fallback={<Spinner />}>
+        <CapsuleList />
+      </Suspense>
     </div>
   );
 }
