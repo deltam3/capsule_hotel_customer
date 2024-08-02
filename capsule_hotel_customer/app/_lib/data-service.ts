@@ -18,7 +18,9 @@ export async function getCapsules(): Promise<CapsuleType[]> {
   return data as CapsuleType[];
 }
 
-export async function getCapsule(id) {
+type GetCapSuleType = Database["public"]["Tables"]["capsules"]["Row"]["id"];
+
+export async function getCapsule(id: GetCapSuleType) {
   const { data, error } = await supabase
     .from("capsules")
     .select("*")

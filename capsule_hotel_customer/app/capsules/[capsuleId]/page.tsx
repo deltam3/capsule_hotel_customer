@@ -2,7 +2,13 @@ import Image from "next/image";
 import { getCapsule, getCapsules } from "@/app/_lib/data-service";
 import { HiEye, HiMap, HiOutlineUsers } from "react-icons/hi";
 
-export async function generateMetadata({ params }) {
+interface PageParamsProps {
+  params: {
+    capsuleId: any;
+  };
+}
+
+export async function generateMetadata({ params }: PageParamsProps) {
   const { name } = await getCapsule(params.capsuleId);
   return { title: `Capsule ${name}` };
 }
@@ -15,7 +21,7 @@ export async function generateStaticParams() {
   return ids;
 }
 
-export default async function Page({ params }) {
+export default async function Page({ params }: PageParamsProps) {
   const capsule = await getCapsule(params.capsuleId);
 
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
