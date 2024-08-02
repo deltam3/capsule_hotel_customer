@@ -4,11 +4,17 @@ import React from "react";
 import image1 from "@/public/11.jpg";
 import image2 from "@/public/bath.webp";
 
+export const revalidate = 3600;
+
 export const metadata = {
   title: "About",
 };
 
-export default function Page() {
+import { getCapsules } from "../_lib/data-service";
+
+export default async function Page() {
+  const capsules = await getCapsules();
+
   return (
     <div className="grid grid-cols-5 gap-x-24 gap-y-32 text-lg items-center">
       <div className="col-span-3">
@@ -51,7 +57,7 @@ export default function Page() {
 
       <div className="col-span-3">
         <h1 className="text-4xl mb-10 text-accent-400 font-medium">
-          South Korea's best capsule hotel since 2024
+          {capsules.length} comfortable capsules available
         </h1>
 
         <div className="space-y-8">
