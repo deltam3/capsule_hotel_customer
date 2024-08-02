@@ -46,3 +46,42 @@ export async function getCountries() {
     throw new Error("나라들을 가져오지 못했습니다.");
   }
 }
+
+export async function getReservedDatesByCapsuleId(capsuleId) {
+  let today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  today = today.toISOString();
+
+  const { data, error } = await supabase
+    .from("reservations")
+    .select("*")
+    .eq("capsuleId", capsuleId)
+    .or(`startDate.gte.${today},status.eq.checked-in`);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Couldn't load the reservations");
+  }
+
+  const reservedDates = data
+    .map((reservation) => {
+      return eachDayOfInterval({
+        start: new Date(reservation.startDate),
+        end: new Date(reservation.endDate),
+      });
+    })
+    .flat();
+
+  return reservedDates;
+}
+
+export async function getSettings() {
+  const { data, error } = await supabase.from("settings").select("*").single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Settings could not be loaded");
+  }
+
+  return data;
+}
