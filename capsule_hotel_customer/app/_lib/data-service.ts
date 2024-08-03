@@ -1,6 +1,7 @@
 import { Database } from "@/database.types";
 import { supabase } from "./supabase";
 import { notFound } from "next/navigation";
+import { eachDayOfInterval } from "date-fns";
 
 type CapsuleType = Database["public"]["Tables"]["capsules"]["Row"];
 
@@ -82,6 +83,41 @@ export async function getSettings() {
     console.error(error);
     throw new Error("Settings could not be loaded");
   }
+
+  return data;
+}
+
+type newCustomerType = Database["public"]["Tables"]["customers"]["Row"];
+
+interface CreateCustomerProps {
+  email: string;
+  fullName: string;
+}
+
+// export async function createCustomer({ newCustomer }: CreateCustomerProps) {
+export async function createCustomer({ email, fullName }: CreateCustomerProps) {
+  const { data, error } = await supabase
+    .from("customers")
+    .insert([email, fullName]);
+  // .insert([newCustomer]);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Customer could not be created");
+  }
+
+  return data;
+}
+type GetCustomerProps = {
+  email: string;
+};
+
+export async function getCustomer({ email }: GetCustomerProps) {
+  const { data, error } = await supabase
+    .from("customers")
+    .select("*")
+    .eq("email", email)
+    .single();
 
   return data;
 }

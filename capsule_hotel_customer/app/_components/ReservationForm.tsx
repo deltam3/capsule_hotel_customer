@@ -3,12 +3,14 @@
 import { Database } from "@/database.types";
 import { useReservation } from "./ReservationContext";
 type CapsuleType = Database["public"]["Tables"]["capsules"]["Row"];
+// type UserType = Database["public"]["Tables"][""];
 
 type ReservationFormProps = {
   capsule: CapsuleType;
+  user: any;
 };
 
-function ReservationForm({ capsule }: ReservationFormProps) {
+function ReservationForm({ capsule, user }: ReservationFormProps) {
   const { range } = useReservation();
   const maxCapacity = capsule.maxCapacity ?? 0;
 
