@@ -94,17 +94,20 @@ interface CreateCustomerProps {
   fullName: string;
 }
 
-// export async function createCustomer({ newCustomer }: CreateCustomerProps) {
-export async function createCustomer({ email, fullName }: CreateCustomerProps) {
+export async function createCustomer(newCustomer: CreateCustomerProps) {
+  // export async function createCustomer({ email, fullName }: CreateCustomerProps) {
   const { data, error } = await supabase
     .from("customers")
-    .insert([email, fullName]);
-  // .insert([newCustomer]);
+    .insert([newCustomer]);
 
   if (error) {
     console.error(error);
+    console.log("CREATE CUSTOMER ERROR");
+
     throw new Error("Customer could not be created");
   }
+
+  console.log("CREATE CUSTOMER RETURN");
 
   return data;
 }
@@ -112,7 +115,7 @@ type GetCustomerProps = {
   email: string;
 };
 
-export async function getCustomer({ email }: GetCustomerProps) {
+export async function getCustomer(email: GetCustomerProps) {
   const { data, error } = await supabase
     .from("customers")
     .select("*")

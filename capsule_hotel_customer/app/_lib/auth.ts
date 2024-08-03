@@ -1,9 +1,11 @@
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import { createCustomer, getCustomer } from "./data-service";
+
 const authConfig = {
   providers: [
-    GoogleProvider({
+    Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
     }),
@@ -26,7 +28,7 @@ const authConfig = {
     },
     async session({ session, user }) {
       const customer = await getCustomer(session.user.email);
-      session.user.cusomterId = customer.id;
+      session.user.customerId = customer.id;
       return session;
     },
   },
