@@ -1,7 +1,14 @@
 import Image from "next/image";
 import TextExpander from "./TextExpander";
 import { HiEye, HiMap, HiOutlineUsers } from "react-icons/hi";
-function Capsule({ capsule }) {
+import { Database } from "@/database.types";
+
+type CapsuleType = Database["public"]["Tables"]["capsules"]["Row"];
+type CapsuleProps = {
+  capsule: CapsuleType;
+};
+
+function Capsule({ capsule }: CapsuleProps) {
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
     capsule;
   return (
