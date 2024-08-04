@@ -125,7 +125,7 @@ export async function getCustomer(email: GetCustomerProps) {
   return data;
 }
 
-export async function getReservations(customerId) {
+export async function getReservations(customerId: string) {
   const { data, error, count } = await supabase
     .from("reservations")
     .select(
@@ -137,6 +137,21 @@ export async function getReservations(customerId) {
   if (error) {
     console.error(error);
     throw new Error("Reservations could not get loaded");
+  }
+
+  return data;
+}
+
+export async function getReservation(id: string) {
+  const { data, error, count } = await supabase
+    .from("reservations")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Reservation could not get loaded");
   }
 
   return data;

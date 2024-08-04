@@ -41,10 +41,10 @@ function ReservationForm({ capsule, user }: ReservationFormProps) {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="observations">Anything we should know?</label>
+          <label htmlFor="comment">Anything we should know?</label>
           <textarea
-            name="observations"
-            id="observations"
+            name="comment"
+            id="comment"
             className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
             placeholder="Any meal that you want to eat? Are you allergic to anything?"
           />

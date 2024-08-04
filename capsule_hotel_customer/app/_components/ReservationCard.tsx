@@ -14,13 +14,13 @@ type Reservation = Database["public"]["Tables"]["reservations"]["Row"];
 
 interface ReservationCardProps {
   reservation: Reservation;
+  onDelete: (reservationId: string) => void;
 }
 
-interface ReservationCardProps {
-  reservation: Reservation;
-}
-
-const ReservationCard: React.FC<ReservationCardProps> = ({ reservation }) => {
+const ReservationCard: React.FC<ReservationCardProps> = ({
+  reservation,
+  onDelete,
+}) => {
   const {
     id,
     customerId,
@@ -44,6 +44,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation }) => {
         <Image
           src={image}
           alt={`Capsule ${name}`}
+          fill
           className="object-cover border-r border-primary-800"
         />
       </div>
@@ -83,7 +84,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation }) => {
             {numCustomers} customer{numCustomers > 1 && "s"}
           </p>
           <p className="ml-auto text-sm text-primary-400">
-            Booked{" "}
+            Reserved{" "}
             {createdAtObj
               ? format(createdAtObj, "EEE, MMM dd yyyy, p")
               : "Unknown"}
@@ -101,7 +102,7 @@ const ReservationCard: React.FC<ReservationCardProps> = ({ reservation }) => {
               <HiOutlinePencil className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors" />
               <span className="mt-1">Edit</span>
             </Link>
-            <DeleteReservation reservationId={id} />
+            <DeleteReservation reservationId={id} onDelete={onDelete} />
           </>
         ) : null}
       </div>

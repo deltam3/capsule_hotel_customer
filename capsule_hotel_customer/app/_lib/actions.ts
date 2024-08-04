@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { auth, signIn, signOut } from "./auth";
 import { supabase } from "./supabase";
+import { getReservations } from "./data-service";
+import { redirect } from "next/navigation";
 
 export async function signInAction() {
   await signIn("google", { redirectTo: "/account" });
@@ -34,4 +36,64 @@ export async function updateCustomer(formData: FormData): Promise<void> {
   if (error) throw new Error("Customer could not be updated");
 
   revalidatePath("/account/profile");
+}
+
+export async function deleteReservation(reservationId: string) {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  const customerReservations = await getReservations(session.user.customerId);
+  const customerReservationIds = customerReservations.map(
+    (customer) => customer.id
+  );
+
+  if (!customerReservationIds.includes(reservationId))
+    throw new Error("You are not allowed to delete this reservation");
+
+  const { error } = await supabase
+    .from("reservations")
+    .delete()
+    .eq("id", reservationId);
+
+  if (error) throw new Error("Reservation could not be deleted");
+
+  revalidatePath("/account/reservations");
+}
+
+interface FormData {
+  get: (name: string) => string | FormDataEntryValue | null;
+}
+
+export async function updateReservation(formData: FormData): Promise<void> {
+  const reservationId = Number(formData.get("reservationId"));
+
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  const customerReservations = await getReservations(session.user.customerId);
+  const customerReservationIds = customerReservations.map(
+    (reservation) => reservation.id
+  );
+
+  if (!customerReservationIds.includes(reservationId))
+    throw new Error("You are not allowed to update this reservation");
+
+  const updateData = {
+    numCustomers: Number(formData.get("numCustomers")),
+    comment: (formData.get("comment") as string).slice(0, 1000),
+  };
+
+  const { error } = await supabase
+    .from("reservations")
+    .update(updateData)
+    .eq("id", reservationId)
+    .select()
+    .single();
+
+  if (error) throw new Error("Reservation could not be updated");
+
+  revalidatePath(`/account/reservations/edit/${reservationId}`);
+  revalidatePath("/account/reservations");
+
+  redirect("/account/reservations");
 }
