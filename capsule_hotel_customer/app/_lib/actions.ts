@@ -97,3 +97,38 @@ export async function updateReservation(formData: FormData): Promise<void> {
 
   redirect("/account/reservations");
 }
+
+interface ReservationData {
+  capsuleId: string;
+  capsulePrice: number;
+}
+
+export async function createReservation(
+  reservationData: ReservationData,
+  formData: FormData
+): Promise<void> {
+  const session = await auth();
+  if (!session) throw new Error("You must be logged in");
+
+  const newReservation = {
+    ...reservationData,
+    customerId: session.user.customerId,
+    numCustomers: Number(formData.get("numCustomers")),
+    comment: formData.get("comment")?.slice(0, 1000) || "",
+    extrasPrice: 0,
+    totalPrice: reservationData.capsulePrice,
+    isPaid: false,
+    hasMeal: false,
+    status: "unconfirmed",
+  };
+
+  const { error } = await supabase
+    .from("reservations")
+    .insert([newReservation]);
+
+  if (error) throw new Error("Reservation could not be created");
+
+  revalidatePath(`/capsules/${reservationData.capsuleId}`);
+
+  redirect("/capsules/thankyou");
+}

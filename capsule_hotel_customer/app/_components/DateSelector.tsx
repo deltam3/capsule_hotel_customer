@@ -57,7 +57,7 @@ function DateSelector({ settings, capsule, reservedDates }: DateSelectorProps) {
         className="pt-12 place-self-center"
         mode="range"
         onSelect={setRange}
-        selected={range}
+        selected={displayRange}
         min={minReservationLength + 1}
         max={maxReservationLength}
         fromMonth={new Date()}
