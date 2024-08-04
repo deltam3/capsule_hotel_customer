@@ -124,3 +124,20 @@ export async function getCustomer(email: GetCustomerProps) {
 
   return data;
 }
+
+export async function getReservations(customerId) {
+  const { data, error, count } = await supabase
+    .from("reservations")
+    .select(
+      "id, created_at, startDate, endDate, numNights, numCustomers, totalPrice, customerId, capsuleId, capsules(name, image)"
+    )
+    .eq("customerId", customerId)
+    .order("startDate");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Reservations could not get loaded");
+  }
+
+  return data;
+}
