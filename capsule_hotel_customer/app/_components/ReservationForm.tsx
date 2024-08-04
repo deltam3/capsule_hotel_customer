@@ -11,6 +11,7 @@ type ReservationFormProps = {
 };
 
 import { createReservation } from "../_lib/actions";
+import SubmitButton from "./SubmitButton";
 
 function ReservationForm({ capsule, user }: ReservationFormProps) {
   const { range, resetRange } = useReservation();
@@ -42,7 +43,6 @@ function ReservationForm({ capsule, user }: ReservationFormProps) {
 
         <div className="flex gap-4 items-center">
           <img
-            // Important to display google profile images
             referrerPolicy="no-referrer"
             className="h-8 rounded-full"
             src={user.image}
@@ -89,11 +89,13 @@ function ReservationForm({ capsule, user }: ReservationFormProps) {
         </div>
 
         <div className="flex justify-end items-center gap-6">
-          <p className="text-primary-300 text-base">Start by selecting dates</p>
-
-          <button className="bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300">
-            Reserve now
-          </button>
+          {!(startDate && endDate) ? (
+            <p className="text-primary-300 text-base">
+              Start by selecting dates
+            </p>
+          ) : (
+            <SubmitButton pendingLabel="Reserving...">Reserve now</SubmitButton>
+          )}
         </div>
       </form>
     </div>
