@@ -31,10 +31,10 @@ export default function Page({ searchParams }: PageProps) {
         ambient lighting, and cutting-edge technology to enhance your stay. Our
         attention to detail ensures that every aspect, from the high-quality
         materials used to the serene and sophisticated decor, creates an
-        unparalleled experience. Whether you're here for a relaxing getaway or a
-        high-end urban adventure, our luxurious capsules offer a private haven
-        that redefines the concept of capsule living, making it both lavish and
-        exceptionally convenient.
+        unparalleled experience. Whether you&apos;re here for a relaxing getaway
+        or a high-end urban adventure, our luxurious capsules offer a private
+        haven that redefines the concept of capsule living, making it both
+        lavish and exceptionally convenient.
       </p>
 
       <div className="flex justify-end mb-8">
